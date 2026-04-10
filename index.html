@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Galaxy Z AI</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+  <style>
+html, body { height: 100%; margin: 0; }
+body { 
+  font-family: 'Outfit', sans-serif; 
+  background: linear-gradient(135deg, #0a1628 0%, #1a0f2e 25%, #2d1b3d 50%, #1a0f2e 75%, #0a1628 100%);
+  background-attachment: fixed;
+  color: #E5E7EB; 
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #4E94E9, #9079D1, #CE6372);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.glass {
+  background: rgba(17, 24, 39, 0.6);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(78, 148, 233, 0.15);
+}
+
+.glass:hover {
+  border-color: rgba(78, 148, 233, 0.4);
+  box-shadow: 0 0 30px rgba(78, 148, 233, 0.1);
+}
+
+.glow-btn {
+  background: linear-gradient(135deg, #4E94E9, #9079D1);
+  box-shadow: 0 0 20px rgba(78, 148, 233, 0.4);
+  transition: all 0.3s;
+}
+.glow-btn:hover {
+  box-shadow: 0 0 40px rgba(78, 148, 233, 0.6);
+  transform: translateY(-2px);
+}
+
+.glow-btn-outline {
+  border: 1px solid rgba(78, 148, 233, 0.5);
+  transition: all 0.3s;
+}
+.glow-btn-outline:hover {
+  background: rgba(78, 148, 233, 0.15);
+  box-shadow: 0 0 25px rgba(78, 148, 233, 0.2);
+  transform: translateY(-2px);
+}
+
+.coming-badge {
+  background: linear-gradient(135deg, #9079D1, #CE6372);
+  font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em;
+}
+
+@keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+.float { animation: float 6s ease-in-out infinite; }
+
+@keyframes fadeUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+.fade-up { animation: fadeUp 0.8s ease forwards; }
+
+.orb {
+  position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.15; pointer-events: none;
+}
+
+.star-field { position: fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:0; }
+</style>
+  <script>
+tailwind.config = {
+  theme: { extend: { colors: {
+    galaxy: { bg: '#0B0F1A', card: '#111827', purple: '#7C3AED', blue: '#3B82F6', cyan: '#06B6D4' }
+  }}}
+}
+</script>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full">
+  <div id="app" class="w-full h-full overflow-auto relative">
+   <!-- Star field canvas -->
+   <canvas class="star-field" id="stars"></canvas><!-- Floating orbs -->
+   <div class="orb" style="width:400px;height:400px;background:#4E94E9;top:10%;left:-5%;"></div>
+   <div class="orb" style="width:300px;height:300px;background:#9079D1;top:40%;right:-5%;"></div>
+   <div class="orb" style="width:350px;height:350px;background:#CE6372;bottom:10%;left:30%;"></div><!-- Nav -->
+   <nav class="relative z-10 flex items-center justify-between px-6 md:px-12 py-5">
+    <div class="flex items-center gap-2">
+     <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:linear-gradient(135deg,#4E94E9,#CE6372);">
+      <i data-lucide="sparkles" style="width:18px;height:18px;color:#fff;"></i>
+     </div><span class="font-bold text-lg tracking-tight">Galaxy Z AI</span>
+    </div>
+    <div class="hidden md:flex items-center gap-8 text-sm text-gray-400">
+     <a href="#about" class="hover:text-white transition">About</a> <a href="#products" class="hover:text-white transition">Products</a> <a href="#api" class="hover:text-white transition">API Setup</a> <a href="#why" class="hover:text-white transition">Why Us</a>
+    </div><button class="glow-btn px-5 py-2 rounded-xl text-sm font-semibold text-white">Get Started</button>
+   </nav><!-- Hero -->
+   <section class="relative z-10 flex flex-col items-center text-center px-6 pt-16 pb-24 md:pt-24 md:pb-32 max-w-5xl mx-auto">
+    <div class="coming-badge px-3 py-1 rounded-full text-white font-semibold mb-6">
+     ✦ Next-Gen AI Platform
+    </div>
+    <h1 id="heroTitle" class="text-4xl md:text-6xl lg:text-7xl font-900 leading-tight gradient-text fade-up" style="font-weight:900;">Galaxy Z AI — Your Intelligent Digital Assistant</h1>
+    <p id="heroSubtitle" class="mt-6 text-base md:text-lg text-gray-400 max-w-2xl fade-up" style="animation-delay:0.15s;">Powerful AI tools designed to help you solve problems, automate tasks, and optimize your business—all in one place.</p>
+    <p id="heroTagline" class="mt-3 text-sm font-semibold tracking-widest uppercase fade-up" style="animation-delay:0.3s;background:linear-gradient(90deg,#7C3AED,#06B6D4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Think smarter. Build faster. Grow stronger.</p>
+    <div class="flex gap-4 mt-10 fade-up" style="animation-delay:0.45s;">
+     <button class="glow-btn px-8 py-3 rounded-2xl text-white font-semibold">Get Started</button> <button class="glow-btn-outline px-8 py-3 rounded-2xl text-white font-semibold">Try Demo</button>
+    </div><!-- Decorative ring -->
+    <div class="float mt-16 w-48 h-48 md:w-64 md:h-64 rounded-full border border-purple-500/20 flex items-center justify-center">
+     <div class="w-32 h-32 md:w-44 md:h-44 rounded-full border border-blue-500/20 flex items-center justify-center">
+      <div class="w-16 h-16 md:w-24 md:h-24 rounded-full flex items-center justify-center" style="background:linear-gradient(135deg,rgba(124,58,237,0.3),rgba(6,182,212,0.3));">
+       <i data-lucide="brain" style="width:32px;height:32px;color:#7C3AED;"></i>
+      </div>
+     </div>
+    </div>
+   </section><!-- About -->
+   <section id="about" class="relative z-10 px-6 py-20 max-w-4xl mx-auto text-center">
+    <h2 class="text-3xl md:text-4xl font-800 gradient-text mb-6">About Galaxy Z AI</h2>
+    <p id="aboutText" class="text-gray-400 text-base md:text-lg leading-relaxed">Galaxy Z AI is a multi-purpose artificial intelligence platform built for everyone — from students tackling complex problems, to developers accelerating their workflow, to business owners optimizing operations and scaling revenue. Our suite of intelligent tools adapts to your unique needs, delivering precision and speed in one unified ecosystem.</p>
+   </section><!-- Products -->
+   <section id="products" class="relative z-10 px-6 py-20 max-w-6xl mx-auto">
+    <h2 class="text-3xl md:text-4xl font-800 gradient-text text-center mb-14">Our Products</h2>
+    <div class="grid md:grid-cols-2 gap-8">
+     <!-- V1 -->
+     <div class="glass rounded-3xl p-8 transition-all duration-500 hover:border-purple-400/50 cursor-pointer group" onclick="openDemo('v1')">
+      <div class="flex items-center gap-3 mb-6">
+       <div class="w-12 h-12 rounded-2xl flex items-center justify-center" style="background:linear-gradient(135deg,#4E94E9,#9079D1);">
+        <i data-lucide="message-circle" style="width:22px;height:22px;color:#fff;"></i>
+       </div>
+       <div>
+        <h3 class="text-xl font-bold text-white">Version 1</h3>
+        <p class="text-sm text-purple-400 font-semibold">Smart Assistant</p>
+       </div>
+      </div>
+      <ul class="space-y-3 mb-6">
+       <li class="flex items-center gap-3 text-gray-300"><i data-lucide="mic" style="width:16px;height:16px;color:#4E94E9;"></i> Voice input and output</li>
+       <li class="flex items-center gap-3 text-gray-300"><i data-lucide="monitor" style="width:16px;height:16px;color:#9079D1;"></i> Screen sharing support</li>
+       <li class="flex items-center gap-3 text-gray-300"><i data-lucide="zap" style="width:16px;height:16px;color:#CE6372;"></i> Real-time problem solving</li>
+       <li class="flex items-center gap-3 text-gray-300"><i data-lucide="message-square" style="width:16px;height:16px;color:#4E94E9;"></i> Interactive AI chat</li>
+      </ul><button class="glow-btn w-full py-2 rounded-xl text-white font-semibold text-sm group-hover:scale-105 transition-transform">Try Demo →</button>
+     </div><!-- V2 -->
+     <div class="glass rounded-3xl p-8 transition-all duration-500 hover:border-cyan-400/50 cursor-pointer group" onclick="openDemo('v2')">
+      <div class="flex items-center gap-3 mb-6">
+       <div class="w-12 h-12 rounded-2xl flex items-center justify-center" style="background:linear-gradient(135deg,#9079D1,#CE6372);">
+        <i data-lucide="bar-chart-3" style="width:22px;height:22px;color:#fff;"></i>
+       </div>
+       <div>
+        <h3 class="text-xl font-bold text-white">Version 2</h3>
+        <p class="text-sm text-cyan-400 font-semibold">Galaxy Z IOOS</p>
+       </div>
+      </div>
+      <ul class="space-y-3 mb-6">
+       <li class="flex items-center gap-3 text-gray-300"><i data-lucide="package" style="width:16px;height:16px;color:#9079D1;"></i> Smart inventory management</li>
+       <li class="flex items-center gap-3 text-gray-300"><i data-lucide="trending-up" style="width:16px;height:16px;color:#4E94E9;"></i> Business analytics</li>
+       <li class="flex items-center gap-3 text-gray-300"><i data-lucide="lightbulb" style="width:16px;height:16px;color:#CE6372;"></i> AI recommendations</li>
+       <li class="flex items-center gap-3 text-gray-300"><i data-lucide="database" style="width:16px;height:16px;color:#9079D1;"></i> Data automation</li>
+       <li class="flex items-center gap-3 text-gray-300"><i data-lucide="dollar-sign" style="width:16px;height:16px;color:#4E94E9;"></i> Profit optimization</li>
+      </ul><button class="glow-btn w-full py-2 rounded-xl text-white font-semibold text-sm group-hover:scale-105 transition-transform">Try Demo →</button>
+     </div>
+    </div>
+   </section><!-- Coming Soon -->
+   <section id="coming" class="relative z-10 px-6 py-20 max-w-6xl mx-auto">
+    <h2 class="text-3xl md:text-4xl font-800 gradient-text text-center mb-14">Coming Soon</h2>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+     <div class="glass rounded-3xl p-6 text-center transition-all duration-500 relative overflow-hidden group">
+      <span class="coming-badge absolute top-4 right-4 px-2 py-0.5 rounded-full text-white font-bold">Soon</span>
+      <div class="w-14 h-14 mx-auto rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform" style="background:rgba(78,148,233,0.2);"><i data-lucide="cpu" style="width:26px;height:26px;color:#4E94E9;"></i>
+      </div>
+      <h4 class="font-bold text-white mb-2">AI Automation Engine</h4>
+      <p class="text-sm text-gray-500">Automate complex workflows with zero code.</p>
+     </div>
+     <div class="glass rounded-3xl p-6 text-center transition-all duration-500 relative overflow-hidden group">
+      <span class="coming-badge absolute top-4 right-4 px-2 py-0.5 rounded-full text-white font-bold">Soon</span>
+      <div class="w-14 h-14 mx-auto rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform" style="background:rgba(59,130,246,0.2);"><i data-lucide="graduation-cap" style="width:26px;height:26px;color:#3B82F6;"></i>
+      </div>
+      <h4 class="font-bold text-white mb-2">Advanced Learning AI</h4>
+      <p class="text-sm text-gray-500">Personalized AI tutoring and skill building.</p>
+     </div>
+     <div class="glass rounded-3xl p-6 text-center transition-all duration-500 relative overflow-hidden group">
+      <span class="coming-badge absolute top-4 right-4 px-2 py-0.5 rounded-full text-white font-bold">Soon</span>
+      <div class="w-14 h-14 mx-auto rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform" style="background:rgba(6,182,212,0.2);"><i data-lucide="users" style="width:26px;height:26px;color:#06B6D4;"></i>
+      </div>
+      <h4 class="font-bold text-white mb-2">Team Collaboration AI</h4>
+      <p class="text-sm text-gray-500">Smart tools for seamless team productivity.</p>
+     </div>
+     <div class="glass rounded-3xl p-6 text-center transition-all duration-500 relative overflow-hidden group">
+      <span class="coming-badge absolute top-4 right-4 px-2 py-0.5 rounded-full text-white font-bold">Soon</span>
+      <div class="w-14 h-14 mx-auto rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform" style="background:rgba(124,58,237,0.15);"><i data-lucide="wrench" style="width:26px;height:26px;color:#A78BFA;"></i>
+      </div>
+      <h4 class="font-bold text-white mb-2">Custom AI Builder</h4>
+      <p class="text-sm text-gray-500">Design your own AI agents and models.</p>
+     </div>
+    </div>
+   </section><!-- API Setup -->
+   <section id="api" class="relative z-10 px-6 py-20 max-w-4xl mx-auto">
+    <h2 class="text-3xl md:text-4xl font-800 gradient-text text-center mb-14">Get Your API Key</h2>
+    <div class="glass rounded-3xl p-8 md:p-12 space-y-8">
+     <div class="space-y-4">
+      <h3 class="text-xl font-bold text-white flex items-center gap-2"><i data-lucide="key" style="width:22px;height:22px;color:#4E94E9;"></i> How to Get Started</h3>
+      <p class="text-gray-300">Galaxy Z AI uses Groq's powerful API to deliver lightning-fast AI responses. Follow these simple steps:</p>
+     </div>
+     <div class="space-y-5">
+      <div class="flex gap-4">
+       <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,#4E94E9,#9079D1);"><span class="text-white font-bold text-sm">1</span>
+       </div>
+       <div>
+        <h4 class="font-bold text-white mb-1">Visit Groq API</h4>
+        <p class="text-gray-400 text-sm">Click the button below to create a free Groq account and access the API dashboard.</p>
+       </div>
+      </div>
+      <div class="flex gap-4">
+       <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,#9079D1,#CE6372);"><span class="text-white font-bold text-sm">2</span>
+       </div>
+       <div>
+        <h4 class="font-bold text-white mb-1">Generate Your API Key</h4>
+        <p class="text-gray-400 text-sm">Navigate to the API keys section in your Groq dashboard and generate a new API key. Copy it to your clipboard.</p>
+       </div>
+      </div>
+      <div class="flex gap-4">
+       <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,#CE6372,#4E94E9);"><span class="text-white font-bold text-sm">3</span>
+       </div>
+       <div>
+        <h4 class="font-bold text-white mb-1">Integrate with Galaxy Z AI</h4>
+        <p class="text-gray-400 text-sm">Paste your API key into the Galaxy Z AI interface. Your app will instantly unlock all AI features powered by Groq's high-speed inference.</p>
+       </div>
+      </div>
+     </div>
+     <div class="bg-gray-800/30 rounded-2xl p-6 border border-blue-500/20">
+      <p class="text-gray-300 text-sm mb-4"><span class="text-cyan-400 font-semibold">💡 Pro Tip:</span> Groq's API is free to start! You get generous rate limits perfect for testing and development.</p>
+     </div>
+     <div class="bg-gray-900/50 rounded-2xl p-4 border border-gray-700">
+      <p class="text-gray-400 text-sm mb-3">Copy this link and paste it into your browser:</p>
+      <div class="flex items-center gap-2"><code class="flex-1 bg-gray-800 px-4 py-3 rounded-lg text-cyan-400 text-xs font-mono overflow-auto">https://console.groq.com/keys</code> <button onclick="navigator.clipboard.writeText('https://console.groq.com/keys'); this.textContent='✓ Copied'; setTimeout(() => this.textContent='Copy', 2000);" class="bg-blue-600 hover:bg-blue-700 px-4 py-3 rounded-lg text-white text-sm font-semibold whitespace-nowrap transition-colors">Copy</button>
+      </div>
+     </div>
+    </div>
+   </section><!-- Why Choose Us -->
+   <section id="why" class="relative z-10 px-6 py-20 max-w-4xl mx-auto">
+    <h2 class="text-3xl md:text-4xl font-800 gradient-text text-center mb-14">Why Choose Galaxy Z AI?</h2>
+    <div class="grid sm:grid-cols-2 gap-5">
+     <div class="glass rounded-2xl p-5 flex items-center gap-4 transition-all duration-300">
+      <div class="w-10 h-10 rounded-xl flex-shrink-0 flex items-center justify-center" style="background:rgba(124,58,237,0.2);"><i data-lucide="zap" style="width:18px;height:18px;color:#7C3AED;"></i>
+      </div><span class="text-gray-300 font-medium">Fast &amp; intelligent responses</span>
+     </div>
+     <div class="glass rounded-2xl p-5 flex items-center gap-4 transition-all duration-300">
+      <div class="w-10 h-10 rounded-xl flex-shrink-0 flex items-center justify-center" style="background:rgba(59,130,246,0.2);"><i data-lucide="layers" style="width:18px;height:18px;color:#3B82F6;"></i>
+      </div><span class="text-gray-300 font-medium">Multi-purpose platform</span>
+     </div>
+     <div class="glass rounded-2xl p-5 flex items-center gap-4 transition-all duration-300">
+      <div class="w-10 h-10 rounded-xl flex-shrink-0 flex items-center justify-center" style="background:rgba(6,182,212,0.2);"><i data-lucide="shield" style="width:18px;height:18px;color:#06B6D4;"></i>
+      </div><span class="text-gray-300 font-medium">Secure &amp; reliable</span>
+     </div>
+     <div class="glass rounded-2xl p-5 flex items-center gap-4 transition-all duration-300">
+      <div class="w-10 h-10 rounded-xl flex-shrink-0 flex items-center justify-center" style="background:rgba(124,58,237,0.2);"><i data-lucide="briefcase" style="width:18px;height:18px;color:#A78BFA;"></i>
+      </div><span class="text-gray-300 font-medium">Business + personal use</span>
+     </div>
+     <div class="glass rounded-2xl p-5 flex items-center gap-4 transition-all duration-300 sm:col-span-2 sm:max-w-sm sm:mx-auto">
+      <div class="w-10 h-10 rounded-xl flex-shrink-0 flex items-center justify-center" style="background:rgba(59,130,246,0.2);"><i data-lucide="refresh-cw" style="width:18px;height:18px;color:#3B82F6;"></i>
+      </div><span class="text-gray-300 font-medium">Constant updates &amp; improvements</span>
+     </div>
+    </div>
+   </section><!-- CTA -->
+   <section class="relative z-10 px-6 py-24 text-center">
+    <div class="max-w-2xl mx-auto glass rounded-3xl p-12" style="border-color:rgba(124,58,237,0.3);">
+     <h2 id="ctaTitle" class="text-3xl md:text-4xl font-800 gradient-text mb-4">Start Your AI Journey Today 🚀</h2>
+     <p class="text-gray-400 mb-8">Join thousands already using Galaxy Z AI to work smarter.</p>
+     <div class="flex gap-4 justify-center flex-wrap">
+      <button class="glow-btn px-8 py-3 rounded-2xl text-white font-semibold">Get Started Free</button> <button class="glow-btn-outline px-8 py-3 rounded-2xl text-white font-semibold">Learn More</button>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="relative z-10 py-10 text-center border-t border-white/5">
+    <p id="footerText" class="text-gray-500 text-sm">Galaxy Z AI — The Future of Intelligent Systems</p>
+    <p class="text-gray-600 text-xs mt-2">© 2025 Galaxy Z AI. All rights reserved.</p>
+   </footer><!-- Demo Modal -->
+   <div id="demoModal" class="fixed inset-0 z-50 flex items-center justify-center p-4" style="display:none;backdrop-filter:blur(5px);background:rgba(0,0,0,0.7);">
+    <div class="glass rounded-3xl max-w-2xl w-full max-h-96 overflow-hidden flex flex-col">
+     <div class="flex items-center justify-between p-6 border-b border-white/10">
+      <h3 id="modalTitle" class="text-xl font-bold text-white"></h3><button onclick="closeDemo()" class="text-gray-400 hover:text-white transition"><i data-lucide="x" style="width:24px;height:24px;"></i></button>
+     </div>
+     <div class="p-6 overflow-auto flex-1">
+      <div id="demoContent"></div>
+      <div class="mt-6 flex gap-4"><a id="demoLink" href="#" target="_blank" rel="noopener noreferrer" class="glow-btn px-6 py-2 rounded-xl text-white font-semibold text-sm flex-1 text-center">Open Live Demo</a> <button onclick="closeDemo()" class="glow-btn-outline px-6 py-2 rounded-xl text-white font-semibold text-sm">Close</button>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+  <script>
+// Stars
+const canvas = document.getElementById('stars');
+const ctx = canvas.getContext('2d');
+function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+resizeCanvas(); window.addEventListener('resize', resizeCanvas);
+const stars = Array.from({length: 120}, () => ({
+  x: Math.random() * 2000, y: Math.random() * 5000,
+  r: Math.random() * 1.2 + 0.3, o: Math.random() * 0.6 + 0.2
+}));
+function drawStars() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  stars.forEach(s => { ctx.beginPath(); ctx.arc(s.x % canvas.width, s.y % canvas.height, s.r, 0, Math.PI*2); ctx.fillStyle = `rgba(255,255,255,${s.o})`; ctx.fill(); });
+}
+drawStars();
+
+// Intersection Observer fade-in
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting) { e.target.style.opacity='1'; e.target.style.transform='translateY(0)'; }});
+}, {threshold:0.1});
+document.querySelectorAll('#about, #products, #coming, #why').forEach(s => {
+  s.style.opacity='0'; s.style.transform='translateY(30px)'; s.style.transition='all 0.8s ease';
+  obs.observe(s);
+});
+
+lucide.createIcons();
+
+// Demo Modal Functions
+function openDemo(version) {
+  const modal = document.getElementById('demoModal');
+  const title = document.getElementById('modalTitle');
+  const content = document.getElementById('demoContent');
+  const link = document.getElementById('demoLink');
+  
+  if (version === 'v1') {
+    title.textContent = 'Smart Assistant Demo';
+    link.href = 'https://green-buildings.my.canva.site/galaxy-z-ai-assistant';
+    content.innerHTML = `
+      <div class="space-y-4">
+        <p class="text-gray-300">Experience the power of Galaxy Z AI's Smart Assistant:</p>
+        <div class="bg-gray-800/50 rounded-lg p-4 space-y-2">
+          <div class="flex items-center gap-2"><i data-lucide="mic" style="width:16px;height:16px;color:#7C3AED;"></i> <span class="text-gray-300">💬 Real-time voice conversations</span></div>
+          <div class="flex items-center gap-2"><i data-lucide="zap" style="width:16px;height:16px;color:#06B6D4;"></i> <span class="text-gray-300">⚡ Instant problem-solving</span></div>
+          <div class="flex items-center gap-2"><i data-lucide="monitor" style="width:16px;height:16px;color:#3B82F6;"></i> <span class="text-gray-300">🖥️ Screen sharing capabilities</span></div>
+          <div class="flex items-center gap-2"><i data-lucide="message-circle" style="width:16px;height:16px;color:#7C3AED;"></i> <span class="text-gray-300">💭 Interactive AI chat</span></div>
+        </div>
+        <p class="text-gray-400 text-sm">Click "Open Live Demo" to try it out and see how Galaxy Z AI can transform your productivity!</p>
+      </div>
+    `;
+  } else {
+    title.textContent = 'Galaxy Z IOOS Demo';
+    link.href = 'https://galaxy-z-ai-iie.my.canva.site';
+    content.innerHTML = `
+      <div class="space-y-4">
+        <p class="text-gray-300">Explore the Galaxy Z IOOS (Inventory Organization Optimization System):</p>
+        <div class="bg-gray-800/50 rounded-lg p-4 space-y-2">
+          <div class="flex items-center gap-2"><i data-lucide="package" style="width:16px;height:16px;color:#3B82F6;"></i> <span class="text-gray-300">📦 Smart inventory tracking</span></div>
+          <div class="flex items-center gap-2"><i data-lucide="trending-up" style="width:16px;height:16px;color:#06B6D4;"></i> <span class="text-gray-300">📊 Advanced business analytics</span></div>
+          <div class="flex items-center gap-2"><i data-lucide="lightbulb" style="width:16px;height:16px;color:#7C3AED;"></i> <span class="text-gray-300">💡 AI-powered recommendations</span></div>
+          <div class="flex items-center gap-2"><i data-lucide="dollar-sign" style="width:16px;height:16px;color:#06B6D4;"></i> <span class="text-gray-300">💰 Profit optimization tools</span></div>
+        </div>
+        <p class="text-gray-400 text-sm">Launch the live demo to see real-time inventory management and business growth optimization in action!</p>
+      </div>
+    `;
+  }
+  
+  lucide.createIcons();
+  modal.style.display = 'flex';
+}
+
+function closeDemo() {
+  document.getElementById('demoModal').style.display = 'none';
+}
+
+// Close modal on outside click
+document.getElementById('demoModal').addEventListener('click', function(e) {
+  if (e.target === this) closeDemo();
+});
+
+// Element SDK
+const defaultConfig = {
+  background_color: '#0B0F1A',
+  surface_color: '#111827',
+  text_color: '#E5E7EB',
+  primary_action_color: '#7C3AED',
+  secondary_action_color: '#3B82F6',
+  font_family: 'Outfit',
+  font_size: 16,
+  hero_title: 'Galaxy Z AI — Your Intelligent Digital Assistant',
+  hero_subtitle: 'Powerful AI tools designed to help you solve problems, automate tasks, and optimize your business—all in one place.',
+  hero_tagline: 'Think smarter. Build faster. Grow stronger.',
+  about_text: 'Galaxy Z AI is a multi-purpose artificial intelligence platform built for everyone — from students tackling complex problems, to developers accelerating their workflow, to business owners optimizing operations and scaling revenue. Our suite of intelligent tools adapts to your unique needs, delivering precision and speed in one unified ecosystem.',
+  cta_title: 'Start Your AI Journey Today 🚀',
+  footer_text: 'Galaxy Z AI — The Future of Intelligent Systems'
+};
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => {
+    const c = (k) => config[k] || defaultConfig[k];
+    const font = c('font_family');
+    const base = c('font_size');
+    const stack = `${font}, sans-serif`;
+
+    document.body.style.fontFamily = stack;
+    document.body.style.fontSize = base + 'px';
+    document.body.style.background = c('background_color');
+    document.body.style.color = c('text_color');
+
+    document.getElementById('heroTitle').textContent = c('hero_title');
+    document.getElementById('heroSubtitle').textContent = c('hero_subtitle');
+    document.getElementById('heroTagline').textContent = c('hero_tagline');
+    document.getElementById('aboutText').textContent = c('about_text');
+    document.getElementById('ctaTitle').textContent = c('cta_title');
+    document.getElementById('footerText').textContent = c('footer_text');
+
+    document.getElementById('heroTitle').style.fontFamily = stack;
+    document.getElementById('heroTitle').style.fontSize = (base * 3.5) + 'px';
+  },
+  mapToCapabilities: (config) => {
+    const mk = (key) => ({
+      get: () => config[key] || defaultConfig[key],
+      set: (v) => { config[key] = v; window.elementSdk.setConfig({[key]: v}); }
+    });
+    return {
+      recolorables: [mk('background_color'), mk('surface_color'), mk('text_color'), mk('primary_action_color'), mk('secondary_action_color')],
+      borderables: [],
+      fontEditable: mk('font_family'),
+      fontSizeable: mk('font_size')
+    };
+  },
+  mapToEditPanelValues: (config) => new Map([
+    ['hero_title', config.hero_title || defaultConfig.hero_title],
+    ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+    ['hero_tagline', config.hero_tagline || defaultConfig.hero_tagline],
+    ['about_text', config.about_text || defaultConfig.about_text],
+    ['cta_title', config.cta_title || defaultConfig.cta_title],
+    ['footer_text', config.footer_text || defaultConfig.footer_text]
+  ])
+});
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9ea1cebbd0703fea',t:'MTc3NTgyNDY5Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
